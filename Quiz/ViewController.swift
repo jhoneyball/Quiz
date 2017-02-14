@@ -65,24 +65,30 @@ class ViewController: UIViewController {
 
     
     func animateLabelTransitions() {
-  
+        // Force any outstanding layout changes to occur
+        view.layoutIfNeeded()
+        
+        
+        
         let screenWidth = view.frame.width
         self.nextQuestionLabelCenterXConstraint.constant = 0
         self.currentQuestionLabelCenterXConstraint.constant += screenWidth
         
         
         UIView.animate(withDuration: 1,
-                       animations: {
-                        self.currentQuestionLabel.alpha = 0
-                        self.nextQuestionLabel.alpha = 1
-                        self.view.layoutIfNeeded()
+                       delay: 0,
+                       options: [.curveLinear],
+            animations: {
+                self.currentQuestionLabel.alpha = 0
+                self.nextQuestionLabel.alpha = 1
+                self.view.layoutIfNeeded()
         },
-                       completion: { _ in
-                        swap(&self.currentQuestionLabel,
-                             &self.nextQuestionLabel)
-                        swap(&self.currentQuestionLabelCenterXConstraint,
-                             &self.nextQuestionLabelCenterXConstraint)
-                        self.updateOffScreenLabel()
+            completion: { _ in
+                swap(&self.currentQuestionLabel,
+                     &self.nextQuestionLabel)
+                swap(&self.currentQuestionLabelCenterXConstraint,
+                     &self.nextQuestionLabelCenterXConstraint)
+                self.updateOffScreenLabel()
         })
     }
 }
